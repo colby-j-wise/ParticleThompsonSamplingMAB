@@ -45,10 +45,10 @@ class PTS(object):
         var : type float, 
             var_u or var_v
         """
-        shape = ( (N * self.K) / 2.0 ) + self.alpha
-        scale = 0.5 * np.linalg.norm(matrix, 'fro') + self.beta
+        alpha = ( (N * self.K) / 2.0 ) + self.alpha
+        beta = 0.5 * np.linalg.norm(matrix, 'fro') + self.beta
         # Generate random value from inverse gamma(shape,scale)
-        var = round( invgamma.rvs(shape, scale=scale), 3 )
+        var = invgamma.rvs(alpha, scale=beta)
         return var
     
     def sample_Ui(self, V_j, r_ij, var_u): # verify
@@ -72,50 +72,23 @@ class PTS(object):
             sampled latent feature vector for user i
         """
         # Calculate eta_ui
-        eta_ui = np.sum( np.dot(r_ij, V_j) )
+        eta_ui = np.sum(np.dot(r_ij, V_j))
         
         # Calculate precision_ui
         precision_ui = (1./self.var_star) * np.sum(np.dot(V_j, V_j.T)) + (var_u * np.eye(self.K))
-        _invP = np.linalg.inv(precision_ui)
-        #assert( _invP > 0).all(), "ERROR: precision can't be negative"
-        inv_prec_ui = _invP if ( _invP > 0).all() else np.eye(self.K) # hack, keep getting neg's!!!?? ** 
+        invPrecision = np.linalg.inv(precision_ui)
+        assert ( invPrecision >= 0).all(), "ERROR: Precision cannot be negative!"
         
         # calculate mu_ui 
-        mu_ui = (1./self.var_star) * inv_prec_ui * eta_ui
+        mu_ui = (1./self.var_star) * np.dot(invPrecision, eta_ui.T)
         
-        # sample U_i from N( Ui | mu_ui, (prec_ui)^-1 )
-        U_i = np.random.normal( mu_ui, inv_prec_ui ) #should be 1 x k
+        # sample U_i = Normal(mu_ui, invPrecision_ui)
+        U_i = np.random.multivariate_normal( mu_ui.reshape(-1), invPrecision ) #should be 1 x k
         return U_i
 
     def sample_Vj(self, U_j, r_ji, var_v): # Not thinking about this right yet :(
         raise NotImplementedError
-        # """ 
-        # Sample Vj from the posterior:
-        # Pr(Vj | U, R, var*, var_v) ~ N( Vj | mu_vj, (prec_vj)^-1 )
 
-        # Params
-        # ------
-        # U_j : type Numpy matrix, shape = O(N) x K 
-        #     N = # users | matrix of users who rated item 1:t-1
-        # r_ji : type array, shape = 1 x O(N)
-        #     array of observed ratings for item j
-        # var_v : type float,
-        #     sampled var_v for time step t
-
-        # Returns
-        # -------
-        # V_j : type numpy matrix, shape= N x K ???  
-        #     sampled latent feature vector for user i
-        # """
-        # # Calculate eta_vi
-        # eta_vj = np.sum( np.dot(r_ji, U_j) )
-        # # Calculate precision_ui
-        # precision_vj = (1./self.var_star) * np.sum(np.dot(V_j, V_j.T)) + (var_v * np.eye(self.K))
-        # # calculate U_ui 
-        # mu_vj = (1./self.var_star) * np.linalg.inv(precision_vj) * eta_vj
-        # # sample V_j from N( Vj | mu_vj, (prec_vj)^-1 )
-        # V_j = np.random.normal( mu_vj, np.linalg.inv(precision_vj) ) 
-        # return V_j
     
     def recommend_item(self, U_i, V):
         """ 
@@ -139,12 +112,14 @@ class PTS(object):
         """
         ratings = np.dot(U_i, V.T)
         j_hat = np.argmax(ratings)
-        pred_rt =  ratings[j_hat]
-        return j_hat, pred_rt[0]
+        pred_rt =  ratings[j_hat][0]
+        return j_hat, pred_rt
     
     def calculate_reward(self, r_hat, r_true):
         return 1 if r_hat == r_true else -1
     
     def update_posterior(self):
         raise NotImplementedError
+    
+
     

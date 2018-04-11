@@ -60,8 +60,10 @@ class Environment(object):
             dictionary of data containing U,V, R_true, R_obs (noisy R_true)
         """
 
-        U = np.random.normal(self.mu_u, self.var_u, (self.num_users, self.K)) 
-        V = np.random.normal(self.mu_v, self.var_v, (self.num_items, self.K))
+        #U = np.random.normal(self.mu_u, self.var_u, (self.num_users, self.K)) 
+        #V = np.random.normal(self.mu_v, self.var_v, (self.num_items, self.K))
+        U = np.zeros((self.num_users, self.K))
+        V = np.zeros((self.num_items, self.K))
         R_true = np.dot( U, V.T )
         R_obs = R_true + np.random.normal(self.mu_star, self.var_star) # add gaussian noise to R_true
         return { 'U': U, 'V': V, 'R_true': R_true, 'R_obs': R_obs }
@@ -120,29 +122,22 @@ class Environment(object):
         V_j : Numpy matrix, shape ( O(M) x K )
             matrix of items rated by user. M upper bounded total items
         """
-        rated_items = self.userRecItems[user_id]
-        if len(rated_items) == 0:
-            V_j = np.random.normal(self.mu_v, self.var_v, (1, self.K))
-            return V_j
-        else:
-            #R_obs = self.data['R_obs'].copy()
-            #idx_list = np.where( R_obs[user_id] > .0 )[0]
-            V = self.data['V'].copy()
-            V_j = V[rate_items]
-            del R_obs
-            del V
+        item_ids = self.userRecItems[user_id]
+        V_j = self.data['V'][item_ids]
+        if len(V_j) == 0:
+            return np.zeros((1,self.K))
         return V_j
 
     def usersWhoRatedItem(self, item_id):
         raise NotImplementedError
     
     def get_reward_vector(self, user_id):
-        _ = self.userRewards[user_id]
-        if len(_) == 0:
+        _r = self.userRewards[user_id]
+        if len(_r) == 0:
             return 1.0
         # reward for user i from 1:t-1
-        r_it = np.asarray(_).reshape(1,-1) 
-        return r_it
+        rPred_History = np.asarray(_r).reshape(1,-1) 
+        return rPred_History
 
 
 
