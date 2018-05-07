@@ -57,7 +57,7 @@ $r_{ij} | U, V \sim \mathcal{N}(U_i^\top V_j, \sigma^2)$
 This linear Gaussian model has an analytically solvable conditional posterior, but in order to support online inference we use a particle filtering method as described in ETSOMF.
 
 \subsection{Particle Filtering}
-Particle Filtering is a well-known Sequential Monte Carlo method for performing inference in state of a systems where the system evolves over time based on information from noisy measurements. Sequential importance sampling ($SIS$) is a approximate Monte Carlo particle filtering method for analytically intractable systems. The goal of SIS is to approximate a posterior distribution with a weighted set of "samples" known as particles. The key idea is to update particles and their weights with new information at each step to better approximate the target posterior.  
+Particle Filtering is a well known Sequential Monte Carlo method for performing inference where the system evolves over time based on information from noisy measurements. Sequential importance sampling ($SIS$) is a approximate Monte Carlo particle filtering method for analytically intractable systems. The goal of SIS is to approximate a posterior distribution with a weighted set of "samples" known as particles. The key idea is to update particles and their weights with new information at each step to better approximate the target posterior.  
 
 Let $\{X_{0:k}^i, w_k^i\}_1^N$ denote N random measures representative of the posterior of a system, $p(x_{0:k}| z_{1:k})$. Then, we can approximate the true posterior of this system by the following
 
@@ -89,8 +89,8 @@ $U$s generated via systematic resampling are known within the particle sampling 
 \subsection{Particle Thompson Sampling}
 We take advantage of the graphical structure of our probabilistic model to derive an efficient Rao-Blackwellized particle filter which maintains an estimate of the posterior over time. Additionally, we use Thompson sampling to choose particles and balance exploration with exploitation of our current posterior estimate.
 
-Each particle stores parameters $U, V, \sigma_U, \sigma_V$ and we for each update sample $U_{i_t}|V, \sigma_U$
-followed by $V_{j_t}|U, \sigma_v$:
+Each particle stores parameters $U, V, \sigma_U, \sigma_V$ and for every update we sample $U_{i_t}|V, \sigma_U$
+followed by $V_{j_t}|U, \sigma_v$ like so:
 \begin{center}
 $P(U_i | V, R^o, \sigma, \sigma_U) = P(U_i | V_{rts(i)}, R^o_{i, rts(i)}, \sigma_U, \sigma)$ \\
 $= \mathcal{N}(U_i | \mu^u_i, (\Lambda_i^u)^{-1})$ \\
@@ -190,7 +190,7 @@ The final mean squared error using five particles and 2 latent features is 1.36.
 
 
 \subsection{Cold Start Performance}
-To test the performance of the algorithm on cold start users we randomly select 200 users who have viewed at least 120 movies. Then we learn the parameters of item features $V$ without the cold start users’ ratings similar to the approach taken in \cite{zhao2013interactive}. For here we run the algorithm using the learned $V$ with the cold start users. Finally we take a snapshot of the precision of our algorithm at time intervals T=10, 20, 40, 120 and compare versus a baseline of randomly recommending items. As shown in Table 2, our algorithm outperforms the random baseline on cold start users at each time step.
+To test the performance of the algorithm on cold start users we randomly select 200 users who have viewed at least 120 movies. Then we learn the parameters of item features $V$ without the cold start users’ ratings similar to the approach taken in \cite{zhao2013interactive}. From here, we run the algorithm using the learned $V$ with the cold start users. Finally we take a snapshot of the precision of our algorithm at time intervals T=10, 20, 40, 120 and compare versus a baseline of randomly recommending items. As shown in Table 2, our algorithm outperforms the random baseline on cold start users at each time step.
 
 \begin{center}
 $precision@T$ = $\frac{1}{\#users}\sum\limits_{users}\sum\limits_{T=1}^{T}\theta hit$
@@ -220,9 +220,9 @@ PTS     &  0.055 & 0.090 & 0.180 & 0.285 & 0.450 \\
 
 \subsection{User Preference Drift}
 
-Capturing user preference drift in on-line recommendation engines is difficult and we know of no standard methodology for capturing drift. In this paper we present one possible method that is intuitive and easy to explain. Similar to the cold start user experiment, our goal here is examine how the algorithm performs on users that display significant preference drift over time.  
+Capturing user preference drift in online recommendation engines is difficult and we know of no standard methodology for capturing drift. In this paper we present one possible method that is intuitive and easy to explain. Similar to the cold start user experiment, our goal here is examine how the algorithm performs on users that display significant preference drift over time.  
 
-To identify users with high drift over time, we randomly select 200 users with greater than 120 rated items. Next, each user's rating history is sorted by time stamp. We chosen to analyze drift at two distinct time stamps $T=60$ and $T=120$ where $T$ represents the number of rated items at step $T$. Using the two subsets of items for each user, we get the genre information for each item. There are 19 genres in the MovieLens 100k dataset including one unknown. For each item we get the binary representation of the genre where movies can have multiple genre describing them i.e. 'Action' and 'War'. For each user and time bucket a vector representing their genre distribution is obtained from their rated items history. 
+To identify users with high drift over time, we randomly select 200 users with greater than 120 rated items. Next, each user's rating history is sorted by time stamp. We chosen to analyze drift at two distinct time stamps $T=60$ and $T=120$ where $T$ represents the number of rated items at step $T$. Using the two subsets of items for each user, we get the genre information for each item. There are 19 genres in the MovieLens 100k dataset including one unknown. For each item we get the binary representation of the genre where movies can have multiple genres describing them i.e. 'Action' and 'War'. For each user and time bucket a vector representing their genre distribution is obtained from their rated items history.
 
 \begin{center}
 cosine similarity $\theta = \frac{a \dot b}{||a|| \dot ||b||}$ \\
@@ -231,7 +231,7 @@ a = $user_i$ genre distribution @T=60 \\
 b = $user_i$ genre distribution @T=120 \\
 \end{center}
 
-The chosen distance metric we use is cosine similarity where we chose the top-5 users with lowest cosine similarity from $T=60$ to $T=120$. We make no claims at to the optimality of this method for capturing drift, however we found it intuitive to explain and analyze. 
+The chosen distance metric we use is cosine similarity where we choose the top 5 users with lowest cosine similarity from $T=60$ to $T=120$. We make no claims at to the optimality of this method for capturing drift, however we found it intuitive to explain and analyze. 
 
 \begin{figure}[ht]
 
@@ -255,7 +255,7 @@ The chosen distance metric we use is cosine similarity where we chose the top-5 
 \vskip -0.2in
 \end{figure}
 
-We present user $496$ as a case study. User 496 displayed high preference drift as defined above. Qualitatively we can see that by time step 120 their genre distribution changed in the following way: war movies increased 5\% and romance decreased 4\% while action and Sci-Fi increased 4\% in their genre distribution. The MSE graph (Figure 4) for similar users shows that the aggregate algorithm performance outperformed baseline random selection.  
+We present user $496$ as a case study. User 496 displayed high preference drift as defined above. Qualitatively we can see that by time step 120 their genre distribution changed in the following way: war movies increased 5\% and romance decreased 4\% while action and Sci-Fi increased 4\% in their genre distribution. The MSE graph (Figure 4) for similar high drift users shows that the aggregate algorithm performance outperformed baseline random selection.  
 
 \section{Conclusion and Future Work}
 
