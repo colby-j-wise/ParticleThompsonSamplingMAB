@@ -166,27 +166,46 @@ Figure 2 shows the number of unique particles per iteration of the algorithm for
 
 \subsection{Model Evaluation}
 
-\subsubsection{Mean Squared Error}
+The final mean squared error using five particles and 2 latent features is 1.36. Moreover, the best Cumulative Take Rate achieved was .28.
+
 \begin{figure}[ht]
-
 \begin{center}
-\centerline{\includegraphics[width=\columnwidth]{TrainMSE}}
-\caption{Training set mean squared error over time for K = 3 and 10 particles.}
-\label{TrainMSE}
+\centerline{\includegraphics[width=\columnwidth]{CTR}}
+\caption{Cumulative Take Rate}
+\label{MSEResampling}
 \end{center}
-
-\vskip -0.2in
+\vskip -0.4in
 \end{figure}
 
-We first examine mean squared error on the training set. As we see in Figure \ref{TrainMSE}, it decreases
-over time as expected. The final MSE in this case is 1.721.
-
-
-
-\subsubsection{Cumulative Take Rate}
 
 \subsection{Cold Start Performance}
-To test the performance of the algorithm on cold start users we randomly select 200 users who have viewed at least 120 movies. Then we learn the parameters of item features $V$ without the cold start users’ ratings similar to the approach taken in \cite{zhao2013interactive}. Finally we take a snapshot of the CTR of our algorithm at time intervals T=10, 20, 40, 120 and compare versus a baseline of randomly recommending items. 
+To test the performance of the algorithm on cold start users we randomly select 200 users who have viewed at least 120 movies. Then we learn the parameters of item features $V$ without the cold start users’ ratings similar to the approach taken in \cite{zhao2013interactive}. Finally we take a snapshot of the precision of our algorithm at time intervals T=10, 20, 40, 120 and compare versus a baseline of randomly recommending items. The table shows the algorithm outperforms the random baseline on cold start users at each time step.
+
+\begin{center}
+$precision@T$ = $\frac{1}{\#users}\sum\limits_{users}\sum\limits_{T=1}^{T}\theta hit$
+\end{center}
+
+\begin{table}[ht]
+\caption{Cold Start Performance}
+\label{sample-table}
+\vskip 0.15in
+\begin{center}
+\begin{small}
+\begin{sc}
+\begin{tabular}{lccccc}
+\toprule
+Measure & \multicolumn{4}{c}{Precision}\\
+Time Step  & 10     & 20     & 40   & 80    & 120 \\
+\midrule
+Random  &  0.020 & 0.045 & 0.065 & 0.130 & 0.165 \\
+PTS     &  0.055 & 0.090 & 0.180 & 0.285 & 0.450 \\
+\bottomrule
+\end{tabular}
+\end{sc}
+\end{small}
+\end{center}
+\vskip -0.1in
+\end{table}
 
 \subsection{User Preference Drift}
 
