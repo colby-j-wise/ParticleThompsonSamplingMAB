@@ -128,13 +128,13 @@ This dataset has 943 users, 1683 movies, and 100,000 ratings.
 \toprule
 (K, P) & Mean & Std Dev & Min & Max \\
 \midrule
-(2, 2)  & 2.924 & 0.355 & 2.512 & 3.585 \\
-(2, 5)  & 2.981 & 0.387 & 2.552 & 3.711 \\
-(3, 5)  & 2.540 & 0.182 & 2.408 & 2.900 \\
-(3, 10) & 2.838 & 0.507 & 2.326 & 3.639 \\
-(5, 2)  & 2.329 & 0.086 & 2.199 & 2.441 \\
-(5, 10) & 2.367 & 0.088 & 2.251 & 2.519 \\
-(5, 20) & 2.357 & 0.062 & 2.250 & 2.413 \\
+(2, 2)  & 1.539 & 0.227 & 1.294 & 1.861 \\
+(2, 5)  & 1.368 & 0.059 & 1.283 & 1.454 \\
+(3, 5)  & 1.898 & 0.115 & 1.751 & 2.095 \\
+(3, 10) & 1.818 & 0.085 & 1.742 & 1.964 \\
+(3, 20) & 1.865 & 0.105 & 1.773 & 2.012 \\
+(5, 10) & 2.648 & 0.076 & 2.537 & 2.774 \\
+(5, 20) & 2.523 & 0.144 & 2.255 & 2.688 \\
 \bottomrule
 \end{tabular}
 \end{sc}
@@ -143,7 +143,24 @@ This dataset has 943 users, 1683 movies, and 100,000 ratings.
 \vskip -0.1in
 \end{table}
 
+The number of latent features (K) and number of particles (P) are two common hyperparameters. To empirically test how the number of latent features vs particle numbers effects performance, we run the algorithm five times for each (K, P) pair then compute the mean mean squared error, standard deviation, minimum and maximum value. From the results we select K=2 and P=5 given the pair has the lowest MSE and standard deviation. Furthermore, we found the number of latent features to be the most significant hyperparameter for model performance as show in the table: increasing K lead to poorer performance. The number of particles is harder to explain. Somewhat counter intuitively we found that a lower number of particles leads to better results. The reason behind this may be that for this dataset most users reward preference can be approximated by 2-5 particles but more work in this area is needed.
+
 \subsection{Particle Resampling Methods}
+
+As discussed above, a common problem with particle filtering methods is degeneracy and sample impoverishment. To get a better sense for how these two common problems effected the algorithm we analyzed how the number of unique particles changed over time using three resampling methods: multinomial, stratified, and systematic resampling. Additionally, we compare mean squared errors for each method. 
+
+Figure 1 below shows MSE results for each method which show that systematic resampling achieves the best MSE result followed by multinomial and stratified which are essentially equal. Systematic resampling showing the best result matches empirical results in other research \cite{doucet2009tutorial}.
+
+\begin{figure}[ht]
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{mse_resample}}
+\caption{MSE vs Resampling Method}
+\label{MSEResampling}
+\end{center}
+\vskip -0.4in
+\end{figure}
+
+Figure 2 shows the number of unique particles per iteration of the algorithm for each sampling method. The plot shows that systematic also on average uses more unique particles at each iteration. 
 
 \section{Results}
 
@@ -169,6 +186,7 @@ over time as expected. The final MSE in this case is 1.721.
 \subsubsection{Cumulative Take Rate}
 
 \subsection{Cold Start Performance}
+To test the performance of the algorithm on cold start users we randomly select 200 users who have viewed at least 120 movies. Then we learn the parameters of item features $V$ without the cold start users’ ratings similar to the approach taken in \cite{zhao2013interactive}. Finally we take a snapshot of the CTR of our algorithm at time intervals T=10, 20, 40, 120 and compare versus a baseline of randomly recommending items. 
 
 \subsection{User Preference Drift}
 
