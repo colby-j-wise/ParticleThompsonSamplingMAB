@@ -18,6 +18,4 @@ if __name__ == "__main__":
     plt.xlabel("Iteration")
     plt.ylabel("Mean Squared Error")
 
-    plt.show()
-
-
+    plt.savefig("../report/mse_across_resampling_methods_k=2_np=5.png", bbox_inches='tight')
