@@ -221,7 +221,7 @@ Capturing user preference drift in online recommendation engines is difficult an
 
 To identify users with high drift over time, we randomly select 200 users with greater than 120 rated items. Next, each user's rating history is sorted by time stamp. We choose to assume that the users preferences shift at the midpoint of their ordered ratings. Using the two subsets (before and after our assumed shift) of items for each user, we get the genre information for each item. There are 19 genres in the MovieLens 100k dataset including one unknown. For each item we create a binary vector for movie $j$, $G^j$, such that $G^j_i = 1$ if the movie is of genre $i$. It is important to note that this is not a one-hot encoding, because movies can have multiple genres, like both 'Action' and 'War'. We then gather all $G$ for our user before our time cutoff and sum along the genre axis. Finally, we normalize the vector to create a probability distribution. The same is done for movies after the midpoint.
 
-Using these two vectors, representing movie genre preferences before and after the user's midpoint, we can take a distance measure to determine which users show the largest preference drift.
+Using these two vectors, representing movie genre preferences before and after the user's midpoint, we can take a distance measure to determine which users show the largest preference drift (smallest cosine similarity).
 
 \begin{center}
 cosine similarity $\theta = \frac{a \dot b}{||a|| \dot ||b||}$ \\
@@ -257,6 +257,9 @@ We chose to use cosine similarity because it can be thought of as a measure of o
 In Figure 5 we present user $496$ as a case study. User 496 displayed high preference drift as defined above. Qualitatively we can see that by time step 120 their genre distribution changed in the following way: war movies increased 5\% and romance decreased 4\% while action and Sci-Fi increased 4\% in their genre distribution. The MSE graph (Figure 4) for similar high drift users shows that the aggregate algorithm performance outperformed baseline random selection.  
 
 \section{Conclusion and Future Work}
+In this paper we show the performance of an online recommendation algorithm that combines collaborative filtering techniques with particle filtering and Thompson sampling. Within this framework, we address some of the core challenges with particle filtering methods and show empirical results from our implementation, which is also the only open source implementation we are aware of. The algorithm outperforms all presented baselines and we chose to focus our experiments on two fundamental challenges effecting recommendation engines: the cold-start and user preference drift problems. Throughout the experiments, we demonstrated that our algorithm successfully handles both problems.
+
+Our future work involves comparing the algorithm directly to traditional recommendation engines such as matrix factorization, plus online multi-arm bandit algorithms such as linUCB. Second, we would like to explore the interaction between users and item feature vectors during the training phase for high preference drift users. Lastly, we like to explore the diversity of item recommendations and compare to other collaborative filtering approaches.
 
 \nocite{kawale2015efficient}
 \nocite{wang2017online}
