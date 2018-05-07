@@ -143,7 +143,9 @@ This dataset has 943 users, 1683 movies, and 100,000 ratings.
 \vskip -0.1in
 \end{table}
 
-The number of latent features (K) and number of particles (P) are two common hyperparameters. To empirically test how the number of latent features vs particle numbers effects performance, we run the algorithm five times for each (K, P) pair then compute the mean mean squared error, standard deviation, minimum and maximum value. From the results we select K=2 and P=5 given the pair has the lowest MSE and standard deviation. Furthermore, we found the number of latent features to be the most significant hyperparameter for model performance as show in the table: increasing K lead to poorer performance. The number of particles is harder to explain. Somewhat counter intuitively we found that a lower number of particles leads to better results. The reason behind this may be that for this dataset most users reward preference can be approximated by 2-5 particles but more work in this area is needed.
+The number of latent features (K) and number of particles (P) are two common hyperparameters. To empirically test how the number of latent features vs particle numbers effects performance, we run the algorithm five times for each (K, P) pair then compute the mean mean squared error, standard deviation, minimum and maximum value. From the results we select K=2 and P=5 given the pair has the lowest MSE and standard deviation.
+
+Furthermore, we found the number of latent features to be the most significant hyperparameter for model performance as show in the table: increasing K lead to poorer performance. The number of particles is harder to explain. Somewhat counter intuitively we found that a lower number of particles led to better results. This may be because too many particles have the detrimental effect of over-exploring a relatively simple posterior distribution.
 
 \subsection{Particle Resampling Methods}
 
