@@ -114,23 +114,7 @@ online recommendations, however we used the genre data in our evaluation of user
 drift. We subtracted the mean rating from the data to center ratings at 0.
 
 This dataset has 943 users, 1683 movies, and 100,000 ratings.
-
-\section{Results}
-
-\subsection{MSE}
-\begin{figure}[ht]
-
-\begin{center}
-\centerline{\includegraphics[width=\columnwidth]{TrainMSE}}
-\caption{Training set mean squared error over time for K = 3 and 10 particles.}
-\label{TrainMSE}
-\end{center}
-
-\vskip -0.2in
-\end{figure}
-
-We first examine mean squared error on the training set. As we see in Figure \ref{TrainMSE}, it decreases
-over time as expected. The final MSE in this case is 1.721.
+\subsection{Latent Features vs Number of Particles}
 
 \begin{table}[ht]
 \caption{Mean squared error statistics on the test set for various choices of K
@@ -159,9 +143,32 @@ over time as expected. The final MSE in this case is 1.721.
 \vskip -0.1in
 \end{table}
 
-\subsection{Cumulative Take Rate}
+\subsection{Particle Resampling Methods}
 
-\subsection{Hyperparameter Cross Validation}
+\section{Results}
+
+\subsection{Model Evaluation}
+
+\subsubsection{Mean Squared Error}
+\begin{figure}[ht]
+
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{TrainMSE}}
+\caption{Training set mean squared error over time for K = 3 and 10 particles.}
+\label{TrainMSE}
+\end{center}
+
+\vskip -0.2in
+\end{figure}
+
+We first examine mean squared error on the training set. As we see in Figure \ref{TrainMSE}, it decreases
+over time as expected. The final MSE in this case is 1.721.
+
+
+
+\subsubsection{Cumulative Take Rate}
+
+\subsection{Cold Start Performance}
 
 \subsection{User Preference Drift}
 
