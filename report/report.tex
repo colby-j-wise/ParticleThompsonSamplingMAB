@@ -151,12 +151,12 @@ Furthermore, we found the number of latent features to be the most significant h
 
 As discussed above, a common problem with particle filtering methods is degeneracy and sample impoverishment. To get a better sense for how these two common problems effected the algorithm we analyzed how the number of unique particles changed over time using three resampling methods: multinomial, stratified, and systematic resampling. Additionally, we compare mean squared errors for each method. 
 
-Figure 1 below shows MSE results for each method which show that systematic resampling achieves the best MSE result followed by multinomial and stratified which are essentially equal. Systematic resampling showing the best result matches empirical results in other research \cite{doucet2009tutorial}.
+Figure 1 below shows MSE results for each method which show that systematic resampling achieves the best MSE result followed by multinomial and stratified which are essentially equal. Systematic resampling showed the best result, similar to empirical results in other research \cite{doucet2009tutorial}.
 
 \begin{figure}[ht]
 \begin{center}
 \centerline{\includegraphics[width=\columnwidth]{mse_resample}}
-\caption{MSE vs Resampling Method}
+\caption{MSE vs Resampling Method for K=2 and P=5}
 \label{MSEResampling}
 \end{center}
 \vskip -0.4in
@@ -181,7 +181,7 @@ The final mean squared error using five particles and 2 latent features is 1.36.
 
 
 \subsection{Cold Start Performance}
-To test the performance of the algorithm on cold start users we randomly select 200 users who have viewed at least 120 movies. Then we learn the parameters of item features $V$ without the cold start users’ ratings similar to the approach taken in \cite{zhao2013interactive}. Finally we take a snapshot of the precision of our algorithm at time intervals T=10, 20, 40, 120 and compare versus a baseline of randomly recommending items. The table shows the algorithm outperforms the random baseline on cold start users at each time step.
+To test the performance of the algorithm on cold start users we randomly select 200 users who have viewed at least 120 movies. Then we learn the parameters of item features $V$ without the cold start users’ ratings similar to the approach taken in \cite{zhao2013interactive}. Finally we take a snapshot of the precision of our algorithm at time intervals T=10, 20, 40, 120 and compare versus a baseline of randomly recommending items. As shown in Table 2, our algorithm outperforms the random baseline on cold start users at each time step.
 
 \begin{center}
 $precision@T$ = $\frac{1}{\#users}\sum\limits_{users}\sum\limits_{T=1}^{T}\theta hit$
