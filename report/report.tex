@@ -190,6 +190,28 @@ To test the performance of the algorithm on cold start users we randomly select 
 
 \subsection{User Preference Drift}
 
+\begin{figure}[ht]
+
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{drift_MSE}}
+\caption{High drift user set mean squared error of our model vs random ratings with K = 2 and 5 particles.}
+\label{drift_MSE}
+\end{center}
+
+\vskip -0.2in
+\end{figure}
+
+\begin{figure}[ht]
+
+\begin{center}
+\centerline{\includegraphics[width=\columnwidth]{drift_histogram}}
+\caption{Visualization of genre drift for User 496 between "Before" (first 60 time steps) and "After" (last 60 time steps).}
+\label{drift_histogram}
+\end{center}
+
+\vskip -0.2in
+\end{figure}
+
 \section{Conclusion and Future Work}
 
 \nocite{kawale2015efficient}
