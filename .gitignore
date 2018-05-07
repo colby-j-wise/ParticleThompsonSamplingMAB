@@ -9,3 +9,9 @@ __pycache__/
 data
 venv
 .DS_Store
+*.bbl
+*.blg
+*.fdb_latexmk
+*.fls
+report/*.log
+report/*.out
