@@ -1,6 +1,6 @@
 # Multi-Arm Bandits using Thompson Sampling and Probabilistic Matrix Factorization
 
-### Final project for Advance Machine Learning for Personalization (COMS6998), Columbia Spring 2018. We explore the Multi-Arm Bandit problem for online recommendations by combining Particle Thompson Sampling with Probabilistic Matrix-Factorization for ratings-based datasets.
+Final project for *Advanced Machine Learning for Personalization (COMS6998), Columbia Spring 2018*. We explore the Particle Thompson Sampling with Probabilistic Matrix-Factorization for ratings-based recommender systems.
 
 ### References:
 ##### [1] Efficient Thompson Sampling for Online Matrix-Factorization Recommendation (Kawale et. al., 2015)
@@ -18,4 +18,3 @@
 ##### Particle Filtering, Thompson Sampling, Probabilistic Matrix Factorization, Bayesian Hierarchical Multi-Arm Bandits
 
 
-![Image of Squirrel](http://mrbesilly.typepad.com/.a/6a00d8341bfa6953ef01310fe97dc4970c-320wi)
