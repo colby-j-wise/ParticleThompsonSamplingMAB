@@ -30,13 +30,13 @@
 ]
 
 \begin{abstract}
-    Within the field of recommender systems various forms of collaborative filtering are often used to estimate how users will rate items. One of the most popular methods used when contextual information is not available is Probabilistic Matrix Factorization (PMF). This core method is capable of scaling with a large number of observations and performs well even when restricted to sparse datasets. Unfortunately PMF is limited to offline predictions for a fixed set of users and items. First, we present a fast online recommendation system using PMF, Thompson sampling, and particle filtering to provide cold start movie recommendations to users. Then we provide a method for evaluating algorithm performance on users with high drift in preferences. Lastly, we examine the effect of different particle sampling methods on particle degeneracy.
+    Within the field of recommender systems various forms of collaborative filtering are often used to estimate how users will rate items. One of the most popular methods used when contextual information is not available is Probabilistic Matrix Factorization (PMF). This core method is capable of scaling with a large number of observations and performs well even when restricted to sparse datasets. Unfortunately PMF is limited to offline predictions for a fixed set of users and items. First, we present a fast online recommendation system using PMF, Thompson sampling, and particle filtering to provide cold start movie recommendations to users. Then we examine the effect of different particle sampling methods on particle degeneracy. Lastly, we provide a method for evaluating algorithm performance on users with high drift in preferences.
 \end{abstract}
 
 \section{Introduction}
 PMF is the most common collaborative filtering method for recommendation systems. While it does provide useful recommendations for users it also requires a-priori knowledge of the set of users and items. Real world use cases must provide recommendations for users that have no previous history (cold start users). 
 
-Online learning methods are designed to accept new users or items over time without sacrificing the efficiency or accuracy of the algorithm. In Efficient Thompson Sampling for Online Matrix Factorization Recommendation \cite{kawale2015efficient} (ETSOMF) an online algorithm is proposed, but is subject to degeneracy, a common problem in particle filtering methods.
+Online learning methods are designed to accept new users or items over time without sacrificing the efficiency or accuracy of the algorithm. In Efficient Thompson Sampling for Online Matrix Factorization Recommendation \cite{kawale2015efficient} (ETSOMF) an online algorithm is proposed, but is subject to a common particle filtering method problem: degeneracy.
 
 A particle filtering algorithm is said be degenerate when, after only a few iterations, all but one particle has negligible weights. We propose several different particle resampling methods which combat the degeneracy problem and compare their performance on the MovieLens 100k Dataset.
 
