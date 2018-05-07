@@ -1,0 +1,11 @@
+bin
+include
+lib
+.ropeproject
+.cache
+__pycache__/
+*.aux
+.ipynb_checkpoints
+data
+venv
+.DS_Store
