@@ -254,7 +254,7 @@ We chose to use cosine similarity because it can be thought of as a measure of o
 \vskip -0.2in
 \end{figure}
 
-In Figure 5 we present user $496$ as a case study. User 496 displayed high preference drift as defined above. Qualitatively we can see that by time step 120 their genre distribution changed in the following way: war movies increased 5\% and romance decreased 4\% while action and Sci-Fi increased 4\% in their genre distribution. The MSE graph (Figure 4) for similar high drift users shows that the aggregate algorithm performance outperformed baseline random selection.  
+In Figure 5 we present user $496$ as a case study. User 496 displayed high preference drift as defined above. Qualitatively we can see that by time step 120 their genre distribution changed in the following way: war movies increased 5\% and romance decreased 4\% while action and Sci-Fi increased 4\%. The MSE graph (Figure 4) for similar high drift users shows that the aggregate algorithm performance outperformed baseline random selection.  
 
 \section{Conclusion and Future Work}
 In this paper we show the performance of an online recommendation algorithm that combines collaborative filtering techniques with particle filtering and Thompson sampling. Within this framework, we address some of the core challenges with particle filtering methods and show empirical results from our implementation, which is also the only open source implementation we are aware of. The algorithm outperforms all presented baselines and we chose to focus our experiments on two fundamental challenges effecting recommendation engines: the cold-start and user preference drift problems. Throughout the experiments, we demonstrated that our algorithm successfully handles both problems.
