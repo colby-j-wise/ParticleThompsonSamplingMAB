@@ -48,23 +48,23 @@ and $V \in \mathbb{R}^{m \times k}$. $U$ and $V$ are user and item latent matric
 
 The PMF model assigns a Normal prior with zero mean and $K$ dimensional user-specific variance, $\sigma_u^2 I_K$, to the user latent matrix $U$ and a similar distribution to the item latent matrix $V$. Each rating $r_{i,j}$ is then assigned a Normal distribution centered on $U_iV_j^T$ with rating variance $\sigma^2$.
 
-\begin{center}
-$U_i \sim \mathcal{N}(0, \sigma_u^2 I_K)$ \\
-$V_i \sim \mathcal{N}(0, \sigma_v^2 I_K)$ \\
-$r_{ij} | U, V \sim \mathcal{N}(U_i^\top V_j, \sigma^2)$
-\end{center}
+\begin{gather*}
+U_i \sim \mathcal{N}(0, \sigma_u^2 I_K) \\
+V_i \sim \mathcal{N}(0, \sigma_v^2 I_K) \\
+r_{ij} | U, V \sim \mathcal{N}(U_i^\top V_j, \sigma^2)
+\end{gather*}
 
 This linear Gaussian model has an analytically solvable conditional posterior, but in order to support online inference we use a particle filtering method as described in ETSOMF.
 
 \subsection{Particle Filtering}
 Particle Filtering is a well known Sequential Monte Carlo method for performing inference where the system evolves over time based on information from noisy measurements. Sequential importance sampling ($SIS$) is a approximate Monte Carlo particle filtering method for analytically intractable systems. The goal of SIS is to approximate a posterior distribution with a weighted set of "samples" known as particles. The key idea is to update particles and their weights with new information at each step to better approximate the target posterior.  
 
-Let $\{X_{0:k}^i, w_k^i\}_1^N$ denote N random measures representative of the posterior of a system, $p(x_{0:k}| z_{1:k})$. Then, we can approximate the true posterior of this system by the following
+Let $\{X_{0:k}^i, w_k^i\}_1^N$ denote N random measures representative of the posterior of a system, $p(x_{0:k}| z_{1:k})$. Then, we can approximate the true posterior of this system by the following:
 
-\begin{center}
-    $p(x_{0:k}| z_{1:k}) \approx \Sigma_{i=1}^{N}w^i_k \delta(x_{0:k} - x^i_{0:k})$ \\
-    \text{where }  $\Sigma_i w_k^i = 1$ \\
-\end{center}
+\begin{gather*}
+    p(x_{0:k}| z_{1:k}) \approx \Sigma_{i=1}^{N}w^i_k \delta(x_{0:k} - x^i_{0:k}) \\
+    \text{where } \Sigma_i w_k^i = 1
+\end{gather*}
 
 Then, using sequential importance sampling, we can derive update equations for the weight associated with each particle as described in \cite{arulampalam2002tutorial}.
 
@@ -91,16 +91,13 @@ We take advantage of the graphical structure of our probabilistic model to deriv
 
 Each particle stores parameters $U, V, \sigma_U, \sigma_V$ and for every update we sample $U_{i_t}|V, \sigma_U$
 followed by $V_{j_t}|U, \sigma_v$ like so:
-\begin{center}
-$P(U_i | V, R^o, \sigma, \sigma_U) = P(U_i | V_{rts(i)}, R^o_{i, rts(i)}, \sigma_U, \sigma)$ \\
-$= \mathcal{N}(U_i | \mu^u_i, (\Lambda_i^u)^{-1})$ \\
-\ \newline
-\text{where } $\mu_i^u = \frac{1}{\sigma^2}(\Lambda_i^u)^{-1})\zeta_i^u$ \\
-\ \newline
-$\Lambda_i^u = \frac{1}{\sigma^2} \sum_{j \in rts(i)} V_j V_j^{\top} + \frac{1}{\sigma_u^2}I_K$ \\
-\ \newline
-$\zeta_i^u = \sum_{j \in rts(i)} r_{ij}^o V_j$
-\end{center}
+\begin{gather*}
+P(U_i | V, R^o, \sigma, \sigma_U) = P(U_i | V_{rts(i)}, R^o_{i, rts(i)}, \sigma_U, \sigma) \\
+= \mathcal{N}(U_i | \mu^u_i, (\Lambda_i^u)^{-1}) \\
+\text{where } \mu_i^u = \frac{1}{\sigma^2}(\Lambda_i^u)^{-1})\zeta_i^u \\
+\Lambda_i^u = \frac{1}{\sigma^2} \sum_{j \in rts(i)} V_j V_j^{\top} + \frac{1}{\sigma_u^2}I_K \\
+\zeta_i^u = \sum_{j \in rts(i)} r_{ij}^o V_j
+\end{gather*}
 
 
 Here $R^o$ are the observed ratings and $rts(i)$ is the set of items rated by user $i$. The update for our sample of $V_j$ mirrors this update.
